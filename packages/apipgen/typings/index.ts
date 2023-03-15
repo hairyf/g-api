@@ -134,10 +134,31 @@ namespace ApiPipeline {
   }
   export type DefineConfig = ConfigServers | Config
 
-  export type Pipeline = (config: ApiPipeline.Config) => Promise<void>
+  export type Pipeline = () => ({
+    readConfig: PipelineRead
+    original: PipelineFlow
+    parser: PipelineFlow
+    compiler: PipelineFlow
+    generate: PipelineFlow
+    dest: PipelineDest
+  })
+
 }
 
 export type { ApiPipeline }
 export type { StatementField, StatementFunction, StatementImported, StatementInterface, StatementTypeAlias, StatementVariable } from './statement'
+
+/**
+ * Pipeline read（input）function
+ */
+export type PipelineRead = (config: ApiPipeline.Config) => ApiPipeline.ConfigRead | Promise<ApiPipeline.ConfigRead>
+/**
+ * Transfer data in pipeline
+ */
+export type PipelineFlow = (configRead: ApiPipeline.ConfigRead) => ApiPipeline.ConfigRead | Promise<ApiPipeline.ConfigRead>
+/**
+ * Pipeline dest（output）function
+ */
+export type PipelineDest = (configRead: ApiPipeline.ConfigRead) => void
 
 export default ApiPipeline

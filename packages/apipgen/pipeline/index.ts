@@ -1,19 +1,4 @@
-import pPipe from 'p-pipe'
-import type ApiPipeline from '../typings'
-
-/**
- * Pipeline read（input）function
- */
-export type PipelineRead = (config: ApiPipeline.Config) => ApiPipeline.ConfigRead | Promise<ApiPipeline.ConfigRead>
-/**
- * Transfer data in pipeline
- */
-export type PipelineFlow = (configRead: ApiPipeline.ConfigRead) => ApiPipeline.ConfigRead | Promise<ApiPipeline.ConfigRead>
-/**
- * Pipeline dest（output）function
- */
-export type PipelineDest = (configRead: ApiPipeline.ConfigRead) => void
-
+import type { PipelineDest, PipelineFlow, PipelineRead } from '../typings'
 /**
  * create apipgen pipeline process
  * @param readConfig read config pa
@@ -32,14 +17,12 @@ export function pipeline(
   generate: PipelineFlow,
   dest: PipelineDest,
 ) {
-  const pipe = pPipe(
+  return () => ({
     readConfig,
     original,
     parser,
     compiler,
     generate,
     dest,
-  )
-
-  return pipe as ApiPipeline.Pipeline
+  })
 }

@@ -1,4 +1,5 @@
 import ora from 'ora'
+import pPipe from 'p-pipe'
 import type ApiPipeline from './typings'
 import { inPipeline } from './utils'
 
@@ -6,15 +7,24 @@ export async function openPipeWebClientGenerator(config: ApiPipeline.Config | Ap
   const configs: ApiPipeline.Config[] = Array.isArray(config) ? config : [config]
   const spinner = ora('Generate API File...\n').start()
 
-  const process = configs.map((config) => {
-    const pipeline = inPipeline(config.pipeline || 'swag-axios-ts')
-    if (!pipeline)
+  const threads = configs.map((config) => {
+    const usePipeline = inPipeline(config.pipeline || 'swag-axios-ts')
+    if (!usePipeline)
       throw new Error(`Pipeline not found ${config.pipeline}`)
-    return pipeline(config)
+    const pipeline = usePipeline()
+    const thread = pPipe(
+      pipeline.readConfig,
+      pipeline.original,
+      pipeline.parser,
+      pipeline.compiler,
+      pipeline.generate,
+      pipeline.dest,
+    )
+    return thread(config)
   })
 
   try {
-    await Promise.all(process)
+    await Promise.all(threads)
     spinner.succeed()
     spinner.clear()
   }
