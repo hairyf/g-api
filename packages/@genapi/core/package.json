@@ -16,7 +16,7 @@
     "@genapi/config": "workspace:*",
     "jiti": "^1.17.1",
     "ora": "^5",
-    "p-pipe": "^3",
+    "p-pipe": "^4.0.0",
     "unconfig": "^0.3.7"
   }
 }
