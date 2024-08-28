@@ -22,7 +22,7 @@
     "lodash": "^4.17.21",
     "p-pipe": "^3",
     "pascal-case": "^3.1.2",
-    "prettier": "^2.8.4",
+    "prettier": "^3.0.0",
     "transliteration": "^2.3.5",
     "ts-factory-extra": "^0.0.5"
   },
