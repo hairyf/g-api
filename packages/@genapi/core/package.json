@@ -15,7 +15,7 @@
   "dependencies": {
     "@genapi/config": "workspace:*",
     "jiti": "^1.17.1",
-    "ora": "^5",
+    "ora": "^8.0.0",
     "p-pipe": "^3",
     "unconfig": "^0.3.7"
   }
